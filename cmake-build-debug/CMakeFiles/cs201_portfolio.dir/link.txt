@@ -1,1 +1,0 @@
-/usr/bin/cc -g   CMakeFiles/cs201_portfolio.dir/src/main.c.o CMakeFiles/cs201_portfolio.dir/tests/testMain.c.o  -o cs201_portfolio 
