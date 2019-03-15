@@ -1,0 +1,12 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/jrstringfellow/Projects/cs201_portfolio/tests/testMain.c
+src/main.c
+/home/jrstringfellow/Projects/cs201_portfolio/tests/src/main.c
+
