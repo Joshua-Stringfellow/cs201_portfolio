@@ -3,4 +3,4 @@ project(cs201_portfolio C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(cs201_portfolio src/main.c tests/testMain.c)
+add_executable(cs201_portfolio src/main.c tests/testMain.c src/fileReader.c src/fileReader.h src/dataStructure.c src/dataStructure.h)

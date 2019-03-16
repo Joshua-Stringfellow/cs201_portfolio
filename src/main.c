@@ -1,11 +1,7 @@
 #include <stdio.h>
-
-int return_num(){
-    int i = 2;
-    return i;
-}
+#include "fileReader.h"
 
 int main() {
-    printf("Hello, World!\n");
+    readFile();
     return 0;
 }
