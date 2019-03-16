@@ -4,7 +4,23 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include "dataStructure.h"
+#include "foodItem.h"
+
+FOODLIST *createList(){
+    FOODLIST *newList = malloc(sizeof(struct foodList));
+    newList -> head = NULL;
+}
+
+FOODLIST *addFoodList(FOODLIST *myList, FOODITEM *myItem){
+    if (myList -> head == NULL) {
+        myList->head = myItem;
+    }
+    else{
+        FOODITEM *curr = myList -> head;
+        while(curr -> next != NULL)
+            curr = curr -> next;
+    }
+}
 
 FOODITEM *create(char *values[]){
     FOODITEM *newItem = malloc(sizeof(FOODITEM));
@@ -20,6 +36,17 @@ FOODITEM *create(char *values[]){
     newItem -> gMl = values[8];
     newItem -> servingSizeUnit=strtod(values[9], &stopString);
     newItem -> unit = values[10];
+    newItem -> next = NULL;
 
     return newItem;
+}
+
+FOODITEM *retrieve(int id, FOODLIST *myList){
+    FOODITEM *myItem = myList ->head;
+    while (myItem != NULL){
+        if (myItem -> id == id){
+            break;
+        }
+    }
+    return myItem;
 }

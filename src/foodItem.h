@@ -16,11 +16,16 @@ typedef struct foodItem{
     char *gMl;
     double servingSizeUnit;
     char *unit;
+    struct foodItem *next;
 }FOODITEM;
 
-FOODITEM* create(char *values[]);
-int  delete(int id);
-struct foodItem* retrieve(int id);
+typedef struct foodList{
+    FOODITEM *head;
+}FOODLIST;
+
+FOODITEM *create(char *values[]);
+int  delete();
+FOODITEM *retrieve(int id, FOODLIST *myList);
 int update(int id);
 #endif //CS201_PORTFOLIO_DATASTRUCTURE_H
 

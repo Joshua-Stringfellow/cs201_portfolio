@@ -5,7 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "fileReader.h"
-#include "dataStructure.h"
+#include "foodItem.h"
 
 //Private Functions
 void parseString(char *string){
@@ -18,7 +18,7 @@ void parseString(char *string){
         ptr = strtok(NULL, delim);
         c ++;
     }
-    create(values);
+    FOODITEM *myFood = create(values);
 }
 //Public Functions
 void readFile(){
