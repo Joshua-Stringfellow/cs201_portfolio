@@ -21,9 +21,10 @@ typedef struct foodItem{
 
 typedef struct foodList{
     FOODITEM *head;
+    int size;
 }FOODLIST;
 
-FOODITEM *create(char *values[]);
+FOODITEM *createFoodItem(char *values[]);
 int  delete();
 FOODITEM *retrieve(int id, FOODLIST *myList);
 int update(int id);

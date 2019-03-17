@@ -5,10 +5,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include "foodItem.h"
+//TODO: implement delete method
+//
 
 FOODLIST *createList(){
     FOODLIST *newList = malloc(sizeof(struct foodList));
     newList -> head = NULL;
+    newList -> size = 0;
 }
 
 FOODLIST *addFoodList(FOODLIST *myList, FOODITEM *myItem){
@@ -19,10 +22,12 @@ FOODLIST *addFoodList(FOODLIST *myList, FOODITEM *myItem){
         FOODITEM *curr = myList -> head;
         while(curr -> next != NULL)
             curr = curr -> next;
+        curr -> next = myItem;
     }
+    myList -> size++;
 }
 
-FOODITEM *create(char *values[]){
+FOODITEM *createFoodItem(char *values[]){
     FOODITEM *newItem = malloc(sizeof(FOODITEM));
     char *stopString;
     newItem -> id = atoi(values[0]);
