@@ -6,9 +6,10 @@
 #include <stdlib.h>
 #include "dataLoader.h"
 #include "foodItem.h"
+#include "queue.h"
 
 //Private Functions
-void parseString(char *string){
+void parseString(QUEUE *myQueue, char *string){
     char delim[] = "~";
     char *values[10];
     char *ptr = strtok(string, delim);
@@ -18,10 +19,11 @@ void parseString(char *string){
         ptr = strtok(NULL, delim);
         c ++;
     }
-    FOODITEM *myFood = createFoodItem(values);
+    enqueue(myQueue, createFoodItem(values));
 }
 //Public Functions
-void readFile(){
+QUEUE *readFile(){
+    QUEUE * temp = newQUEUE();
     FILE *fp;
     char *line = NULL;
     size_t len = 0;
@@ -30,10 +32,11 @@ void readFile(){
     fp = fopen("resources/test.csv", "r");
     if (fp == NULL){
         printf("null pointer");
-        return;
+        return temp;
     }
     while ((read = getline(&line, &len, fp)) != -1) {
-        parseString(line);
+        parseString(temp, line);
     }
-    return;
+    display(peekQUEUE(temp), stdout);
+    return temp;
 }

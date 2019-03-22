@@ -6,12 +6,12 @@
 #include "sll.h"
 #include "foodItem.h"
 
-QUEUE *newQUEUE(void (*d)(void *,FILE *),void (*f)(void *))   //constructor
+QUEUE *newQUEUE()   //constructor
 {
     QUEUE *items = malloc(sizeof(QUEUE));
-    items->list = newSLL(d,f);
-    items->display =d;
-    items->free=f;
+    items->list = newSLL();
+//    items->display =d;
+//    items->free=f;
     return items;
 }
 void enqueue(QUEUE *items,FOODITEM *value)      //stores a FoodItem
@@ -31,19 +31,7 @@ int sizeQUEUE(QUEUE *items)
 {
     return sizeSLL(items->list);
 }
-//void displayQUEUE(QUEUE *items,FILE *fp)
-//{
-//    fprintf(fp,"<");
-//    for(int i=0; i<sizeQUEUE(items); i++){
-//        items->display(getSLL(items->list,i),fp);
-//        if (i < sizeQUEUE(items)-1)
-//            fprintf(fp,",");
-//    }
-//    fprintf(fp,">");
-//
-//}
-//
-//void displayQUEUEdebug(QUEUE *items, FILE *fp){displaySLLdebug(items->list,fp);}
+
 
 void freeQUEUE(QUEUE *items){
     freeSLL(items->list);

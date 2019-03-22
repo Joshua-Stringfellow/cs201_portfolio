@@ -27,12 +27,6 @@ FOODITEM *createFoodItem(char *values[]){
     return newItem;
 }
 
-FOODITEM *retrieve(int id, FOODLIST *myList){
-    FOODITEM *myItem = myList ->head;
-    while (myItem != NULL){
-        if (myItem -> id == id){
-            break;
-        }
-    }
-    return myItem;
+void display(FOODITEM *myItem, FILE *output){
+    printf("Id: %d", myItem -> id);
 }

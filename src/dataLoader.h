@@ -4,7 +4,10 @@
 
 #ifndef CS201_PORTFOLIO_FILEREADER_H
 #define CS201_PORTFOLIO_FILEREADER_H
-void readFile();
+
+#include "queue.h"
+
+QUEUE *readFile();
 #endif //CS201_PORTFOLIO_FILEREADER_H
 
 

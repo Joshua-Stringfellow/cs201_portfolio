@@ -11,11 +11,11 @@
 
 typedef struct queue{
     SLL *list;
-    void (*display)(void *, FILE *);
-    void (*free)(void *);
+//    void (*display)(void *, FILE *);
+//    void (*free)(void *);
 } QUEUE;
 
-extern QUEUE *newQUEUE(void (*d)(void *,FILE *),void (*f)(void *));
+extern QUEUE *newQUEUE();
 extern void enqueue(QUEUE *items,FOODITEM *value);
 extern void *dequeue(QUEUE *items);
 extern void *peekQUEUE(QUEUE *items);

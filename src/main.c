@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include "dataLoader.h"
+#include "queue.h"
 
 int main() {
-    readFile();
+
+    QUEUE *temp = readFile();
+
     return 0;
 }
