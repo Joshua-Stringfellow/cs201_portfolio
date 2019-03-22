@@ -21,6 +21,7 @@ typedef struct foodItem{
 
 typedef struct foodList{
     FOODITEM *head;
+    FOODITEM *tail;
     int size;
 }FOODLIST;
 

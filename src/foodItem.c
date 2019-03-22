@@ -8,25 +8,6 @@
 //TODO: implement delete method
 //
 
-FOODLIST *createList(){
-    FOODLIST *newList = malloc(sizeof(struct foodList));
-    newList -> head = NULL;
-    newList -> size = 0;
-}
-
-FOODLIST *addFoodList(FOODLIST *myList, FOODITEM *myItem){
-    if (myList -> head == NULL) {
-        myList->head = myItem;
-    }
-    else{
-        FOODITEM *curr = myList -> head;
-        while(curr -> next != NULL)
-            curr = curr -> next;
-        curr -> next = myItem;
-    }
-    myList -> size++;
-}
-
 FOODITEM *createFoodItem(char *values[]){
     FOODITEM *newItem = malloc(sizeof(FOODITEM));
     char *stopString;
