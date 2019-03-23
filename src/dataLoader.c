@@ -22,14 +22,14 @@ void parseString(HASHTABLE*myTable, char *string){
     insertTable(myTable, createFoodItem(values));
 }
 //Public Functions
-HASHTABLE *readFile(){
+HASHTABLE *readFile(char *databaseFile){
     HASHTABLE *table= createHashTable(50);
     FILE *fp;
     char *line = NULL;
     size_t len = 0;
     ssize_t read;
 
-    fp = fopen("resources/test.csv", "r");
+    fp = fopen(databaseFile, "r");
     if (fp == NULL){
         printf("null pointer");
         return table;
@@ -37,5 +37,6 @@ HASHTABLE *readFile(){
     while ((read = getline(&line, &len, fp)) != -1) {
         parseString(table, line);
     }
+    fclose(fp);
     return table;
 }
