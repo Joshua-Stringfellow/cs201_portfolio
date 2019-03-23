@@ -4,6 +4,9 @@
 
 #ifndef CS201_PORTFOLIO_DATASTRUCTURE_H
 #define CS201_PORTFOLIO_DATASTRUCTURE_H
+
+#include <stdio.h>
+
 typedef struct foodItem{
     int id;
     char *productName;
@@ -19,14 +22,7 @@ typedef struct foodItem{
     struct foodItem *next;
 }FOODITEM;
 
-typedef struct foodList{
-    FOODITEM *head;
-    int size;
-}FOODLIST;
-
 FOODITEM *createFoodItem(char *values[]);
-int  delete();
-FOODITEM *retrieve(int id, FOODLIST *myList);
-int update(int id);
+void display(FOODITEM *,FILE *);
 #endif //CS201_PORTFOLIO_DATASTRUCTURE_H
 

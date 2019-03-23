@@ -1,7 +1,10 @@
 #include <stdio.h>
-#include "fileReader.h"
+#include "dataLoader.h"
+#include "hashtable.h"
 
 int main() {
-    readFile();
+
+    HASHTABLE *temp = readFile();
+
     return 0;
 }

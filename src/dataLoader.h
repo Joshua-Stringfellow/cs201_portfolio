@@ -4,7 +4,10 @@
 
 #ifndef CS201_PORTFOLIO_FILEREADER_H
 #define CS201_PORTFOLIO_FILEREADER_H
-void readFile();
+
+#include "hashtable.h"
+
+HASHTABLE *readFile();
 #endif //CS201_PORTFOLIO_FILEREADER_H
 
 

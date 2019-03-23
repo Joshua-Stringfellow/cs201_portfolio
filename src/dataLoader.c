@@ -4,11 +4,12 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "fileReader.h"
+#include "dataLoader.h"
 #include "foodItem.h"
+#include "hashtable.h"
 
 //Private Functions
-void parseString(char *string){
+void parseString(HASHTABLE*myTable, char *string){
     char delim[] = "~";
     char *values[10];
     char *ptr = strtok(string, delim);
@@ -18,10 +19,11 @@ void parseString(char *string){
         ptr = strtok(NULL, delim);
         c ++;
     }
-    FOODITEM *myFood = create(values);
+    insertTable(myTable, createFoodItem(values));
 }
 //Public Functions
-void readFile(){
+HASHTABLE *readFile(){
+    HASHTABLE *table= createHashTable(50);
     FILE *fp;
     char *line = NULL;
     size_t len = 0;
@@ -30,10 +32,10 @@ void readFile(){
     fp = fopen("resources/test.csv", "r");
     if (fp == NULL){
         printf("null pointer");
-        return;
+        return table;
     }
     while ((read = getline(&line, &len, fp)) != -1) {
-        parseString(line);
+        parseString(table, line);
     }
-    return;
+    return table;
 }
