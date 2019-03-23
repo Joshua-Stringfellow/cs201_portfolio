@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include "dataLoader.h"
 #include "foodItem.h"
-#include "queue.h"
 #include "hashtable.h"
 
 //Private Functions
@@ -24,7 +23,6 @@ void parseString(HASHTABLE*myTable, char *string){
 }
 //Public Functions
 HASHTABLE *readFile(){
-    QUEUE * temp = newQUEUE();
     HASHTABLE *table= createHashTable(50);
     FILE *fp;
     char *line = NULL;

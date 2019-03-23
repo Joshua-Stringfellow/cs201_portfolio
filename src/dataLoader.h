@@ -5,7 +5,6 @@
 #ifndef CS201_PORTFOLIO_FILEREADER_H
 #define CS201_PORTFOLIO_FILEREADER_H
 
-#include "queue.h"
 #include "hashtable.h"
 
 HASHTABLE *readFile();
