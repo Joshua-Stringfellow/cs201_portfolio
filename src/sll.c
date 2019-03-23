@@ -14,8 +14,8 @@ SLL *newSLL() {
         items->head = 0;
         items->tail = 0;
         items->size = 0;
-//        items->display = d;
-//        items->free = f;
+//        manufactureList->display = d;
+//        manufactureList->free = f;
         return items;
 }
 void insertSLL(SLL *items, FOODITEM *newItem){

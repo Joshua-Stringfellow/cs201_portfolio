@@ -3,6 +3,7 @@
 //
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "hashtable.h"
 
 //private
@@ -20,20 +21,30 @@ TABLEITEM *createTableItem(FOODITEM *myItem){
     TABLEITEM *newTableItem = malloc(sizeof(TABLEITEM));
     newTableItem -> key = malloc(sizeof (myItem->manufacture));
     strcpy(newTableItem->key, myItem -> manufacture);
-    newTableItem -> items = newSLL();
-    newTableItem -> items -> head = newTableItem -> items-> tail = myItem;
+    newTableItem -> manufactureList = newSLL();
+    newTableItem -> manufactureList -> head = newTableItem -> manufactureList-> tail = myItem;
 
     return newTableItem;
 }
+TABLEITEM *getTableItem(HASHTABLE *mytable, size_t hashValue){
+    return mytable->items[hashValue];
+}
 
+SLL *getManufactureList(TABLEITEM* myItem){
+    return myItem->manufactureList;
+}
+
+char *getItemKey(HASHTABLE *mytable, size_t hashValue){
+    return mytable->items[hashValue]->key;
+}
 int tablePositionEmpty(HASHTABLE *myTable, size_t hashValue){
     if (myTable->items[hashValue] == 0)
         return 1;
     return 0;
 }
 
-int isCollision(TABLEITEM * myTableItem, FOODITEM *myItem){
-    return strcmp(myTableItem -> key, myItem -> manufacture);
+int isCollision(char *key, char *manufacture){
+    return strcmp(key, manufacture);
 }
 
 void addNewTableItem(HASHTABLE *myTable, size_t  hashValue,FOODITEM *newItem){
@@ -42,11 +53,14 @@ void addNewTableItem(HASHTABLE *myTable, size_t  hashValue,FOODITEM *newItem){
 }
 
 void addManufactureList(HASHTABLE *myTable, size_t hashValue, FOODITEM *newItem){
-    FOODITEM *temp = myTable -> items[hashValue] -> items -> tail;
+    FOODITEM *temp = myTable -> items[hashValue] -> manufactureList -> tail;
     temp -> next = newItem;
-    myTable -> items[hashValue] -> items -> tail = newItem;
+    myTable -> items[hashValue] -> manufactureList -> tail = newItem;
 }
 
+void displayManufactureList(SLL *manufactureList){
+
+}
 //public
 HASHTABLE *createHashTable(uint size){
     HASHTABLE *newTable = malloc(sizeof(HASHTABLE));
@@ -62,12 +76,23 @@ void insertTable(HASHTABLE *myTable, FOODITEM *newItem){
     if (tablePositionEmpty(myTable, hashValue)){
       addNewTableItem(myTable, hashValue, newItem);
     }
-    else if (! tablePositionEmpty(myTable, hashValue) && !isCollision(myTable->items[hashValue], newItem)){
+    else if (! tablePositionEmpty(myTable, hashValue) && ! isCollision(getItemKey(myTable, hashValue), newItem->manufacture)){
         addManufactureList(myTable, hashValue, newItem);
     }
     else{
-        hashValue++;
+        while (!tablePositionEmpty(myTable, hashValue)) {
+            hashValue++;
+            if (hashValue >= myTable->size)
+                hashValue = 0;
+        }
         addNewTableItem(myTable, hashValue, newItem);
     }
+    myTable->count++;
+}
 
+SLL *lookupManufacture(HASHTABLE *mytable, char *manufacture){
+    size_t hashValue = hash(manufacture, mytable->size);
+    if (!tablePositionEmpty(mytable, hashValue) && !isCollision(getItemKey(mytable, hashValue), manufacture)){
+        displayManufactureList(getManufactureList(getTableItem(mytable,hashValue)));
+    }
 }

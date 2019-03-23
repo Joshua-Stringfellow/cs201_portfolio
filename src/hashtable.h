@@ -10,7 +10,7 @@
 
 typedef struct tableItem{
     char *key;
-    SLL *items;
+    SLL *manufactureList;
 }TABLEITEM;
 
 typedef struct hashtable{
@@ -22,4 +22,5 @@ typedef struct hashtable{
 
 HASHTABLE *createHashTable(uint size);
 void insertTable(HASHTABLE *, FOODITEM *);
+SLL *lookupManufacture(HASHTABLE *, char *);
 #endif //CS201_PORTFOLIO_HASHTABLE_H
