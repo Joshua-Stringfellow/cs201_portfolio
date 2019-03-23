@@ -22,7 +22,7 @@ extern void insertSLL(SLL *items, FOODITEM *newItem);
 extern void *removeSLL(SLL *items,int index);
 extern void *getSLL(SLL *items,int index);
 extern int sizeSLL(SLL *items);
-
+extern void displaySLL(SLL *list, FILE *fp);
 extern void freeSLL(SLL *items);
 
 #endif

@@ -7,7 +7,7 @@
 
 #include "hashtable.h"
 
-HASHTABLE *readFile();
+HASHTABLE *readFile(char *);
 #endif //CS201_PORTFOLIO_FILEREADER_H
 
 

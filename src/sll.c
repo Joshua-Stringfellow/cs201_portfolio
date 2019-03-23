@@ -92,6 +92,16 @@ int sizeSLL(SLL *items){
     return items->size;
 }
 
+void displaySLL(SLL *items, FILE *fp){
+    FOODITEM *current = items ->head;
+    int counter = 1;
+    while (current != NULL){
+        printf("%d. Product Name: %s \n",counter, current -> productName);
+        current = current ->next;
+        counter ++;
+    }
+}
+
 void freeSLL(SLL *items){
     FOODITEM * curr;
 
