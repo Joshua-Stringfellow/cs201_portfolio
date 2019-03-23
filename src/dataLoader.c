@@ -7,9 +7,10 @@
 #include "dataLoader.h"
 #include "foodItem.h"
 #include "queue.h"
+#include "hashtable.h"
 
 //Private Functions
-void parseString(QUEUE *myQueue, char *string){
+void parseString(HASHTABLE*myTable, char *string){
     char delim[] = "~";
     char *values[10];
     char *ptr = strtok(string, delim);
@@ -19,11 +20,12 @@ void parseString(QUEUE *myQueue, char *string){
         ptr = strtok(NULL, delim);
         c ++;
     }
-    enqueue(myQueue, createFoodItem(values));
+    insertTable(myTable, createFoodItem(values));
 }
 //Public Functions
-QUEUE *readFile(){
+HASHTABLE *readFile(){
     QUEUE * temp = newQUEUE();
+    HASHTABLE *table= createHashTable(50);
     FILE *fp;
     char *line = NULL;
     size_t len = 0;
@@ -32,11 +34,10 @@ QUEUE *readFile(){
     fp = fopen("resources/test.csv", "r");
     if (fp == NULL){
         printf("null pointer");
-        return temp;
+        return table;
     }
     while ((read = getline(&line, &len, fp)) != -1) {
-        parseString(temp, line);
+        parseString(table, line);
     }
-    display(peekQUEUE(temp), stdout);
-    return temp;
+    return table;
 }

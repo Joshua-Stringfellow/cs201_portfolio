@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include "dataLoader.h"
-#include "queue.h"
+#include "hashtable.h"
 
 int main() {
 
-    QUEUE *temp = readFile();
+    HASHTABLE *temp = readFile();
 
     return 0;
 }
