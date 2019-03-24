@@ -23,4 +23,5 @@ typedef struct hashtable{
 HASHTABLE *createHashTable(uint size);
 void insertTable(HASHTABLE *, FOODITEM *);
 SLL *lookupManufacture(HASHTABLE *, char *);
+void freeTable(HASHTABLE *);
 #endif //CS201_PORTFOLIO_HASHTABLE_H
