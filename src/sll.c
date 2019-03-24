@@ -20,10 +20,12 @@ SLL *newSLL() {
 }
 void insertSLL(SLL *items, FOODITEM *newItem){
     if (items -> size == 0){
-        items -> head = items-> tail = newItem;
+        items -> head = newItem;
+        items-> tail = newItem;
     }
     else{
         items -> tail -> next = newItem;
+        items -> tail = newItem;
     }
         
     items->size++;
@@ -93,12 +95,14 @@ int sizeSLL(SLL *items){
 }
 
 void displaySLL(SLL *items, FILE *fp){
-    FOODITEM *current = items ->head;
-    int counter = 1;
-    while (current != NULL){
-        printf("%d. Product Name: %s \n",counter, current -> productName);
-        current = current ->next;
-        counter ++;
+    if (items!=NULL) {
+        FOODITEM *current = items->head;
+        int counter = 1;
+        while (current != NULL) {
+            printf("\n%d. ID: %d Product Name: %s \n", counter, current->id, current->productName);
+            current = current->next;
+            counter++;
+        }
     }
 }
 
@@ -109,9 +113,10 @@ void freeSLL(SLL *items){
     {
         curr = items->head;
         items->head = items->head->next;
-        if (items->free != 0) {
-            items->free(curr->productName);
-        }
+        free(curr->productName);
+        free(curr->manufacture);
+        free(curr->unit);
+        free(curr->gMl);
         free(curr);
     }
     items->tail=NULL;

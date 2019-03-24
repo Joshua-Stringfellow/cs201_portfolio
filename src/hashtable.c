@@ -19,10 +19,10 @@ static size_t hash(const char* cp, uint size)
 
 TABLEITEM *createTableItem(FOODITEM *myItem){
     TABLEITEM *newTableItem = malloc(sizeof(TABLEITEM));
-    newTableItem -> key = malloc(sizeof (myItem->manufacture));
+    newTableItem -> key = malloc(sizeof (myItem->manufacture) + 1);
     strcpy(newTableItem->key, myItem -> manufacture);
     newTableItem -> manufactureList = newSLL();
-    newTableItem -> manufactureList -> head = newTableItem -> manufactureList-> tail = myItem;
+    insertSLL(newTableItem->manufactureList, myItem);
 
     return newTableItem;
 }
@@ -50,16 +50,16 @@ int isCollision(char *key, char *manufacture){
 void addNewTableItem(HASHTABLE *myTable, size_t  hashValue,FOODITEM *newItem){
     TABLEITEM *newTableItem = createTableItem(newItem);
     myTable -> items[hashValue] = newTableItem;
+    myTable->count++;
 }
 
 void addManufactureList(HASHTABLE *myTable, size_t hashValue, FOODITEM *newItem){
-    FOODITEM *temp = myTable -> items[hashValue] -> manufactureList -> tail;
-    temp -> next = newItem;
-    myTable -> items[hashValue] -> manufactureList -> tail = newItem;
+    SLL *list = getTableItem(myTable,hashValue) -> manufactureList;
+    insertSLL(list,newItem);
 }
 
 void displayManufactureList(SLL *manufactureList){
-
+    displaySLL(manufactureList,stdout);
 }
 //public
 HASHTABLE *createHashTable(uint size){
@@ -68,16 +68,20 @@ HASHTABLE *createHashTable(uint size){
     newTable -> count = 0;
 
     newTable ->items = calloc(size, sizeof(FOODITEM));
+    return newTable;
 }
 
 void insertTable(HASHTABLE *myTable, FOODITEM *newItem){
     size_t hashValue =hash(newItem->manufacture, myTable->size);
-    printf("\nHash value: %lu ", hashValue);
+    //printf("\nHash value: %lu ", hashValue);
     if (tablePositionEmpty(myTable, hashValue)){
       addNewTableItem(myTable, hashValue, newItem);
+      //displaySLL(getTableItem(myTable,hashValue) ->manufactureList, stdout);
+
     }
     else if (! tablePositionEmpty(myTable, hashValue) && ! isCollision(getItemKey(myTable, hashValue), newItem->manufacture)){
         addManufactureList(myTable, hashValue, newItem);
+        //displaySLL(getTableItem(myTable,hashValue) ->manufactureList, stdout);
     }
     else{
         while (!tablePositionEmpty(myTable, hashValue)) {
@@ -86,8 +90,8 @@ void insertTable(HASHTABLE *myTable, FOODITEM *newItem){
                 hashValue = 0;
         }
         addNewTableItem(myTable, hashValue, newItem);
+        //displaySLL(getTableItem(myTable,hashValue) ->manufactureList, stdout);
     }
-    myTable->count++;
 }
 
 SLL *lookupManufacture(HASHTABLE *mytable, char *manufacture){
@@ -95,4 +99,18 @@ SLL *lookupManufacture(HASHTABLE *mytable, char *manufacture){
     if (!tablePositionEmpty(mytable, hashValue) && !isCollision(getItemKey(mytable, hashValue), manufacture)){
         displayManufactureList(getManufactureList(getTableItem(mytable,hashValue)));
     }
+}
+void freeTableItem(TABLEITEM *myItme){
+    free(myItme->key);
+    freeSLL(myItme->manufactureList);
+    free(myItme);
+}
+
+void freeTable(HASHTABLE *myTable){
+    for (int i=0; i< myTable->size; i++){
+        if (myTable->items[i] != 0)
+            freeTableItem(myTable->items[i]);
+    }
+    free(myTable->items);
+    free(myTable);
 }

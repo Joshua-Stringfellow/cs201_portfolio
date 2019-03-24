@@ -5,9 +5,11 @@
 #include "userInterface.h"
 
 int main() {
+    char *filename= "resources/test.csv";
 
     printWelcomeMessage();
-    if (strcmp(promptUserForHelp(), "help") == 0) {
+    char *help = promptUserForHelp();
+    if (strcmp(help, "help") == 0) {
         printHelpMessage();
     }
     else{
@@ -19,23 +21,22 @@ int main() {
             case 1:
                 printLoadingMessage();
                 HASHTABLE *temp;
-                temp=readFile("resources/test.csv");
+                temp=readFile(filename);
                 printf("done.\n");
                 printf("Enter the manufacture of your product\n");
                 char *string =cleanInput(getMenuChoice());
                 printf("Looking up manufacture \"%s\"\n",string);
                 SLL *manufactureList = lookupManufacture(temp, string);
+                free(string);
                 displaySLL(manufactureList, stdin);
+                freeTable(temp);
                 break;
 
             default:
                 break;
 
         }
-
-
-
     }
-
+    free(help);
     return 0;
 }
