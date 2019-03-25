@@ -14,4 +14,5 @@ void showMenu();
 char *getMenuChoice();
 void printLoadingMessage();
 char *cleanInput(char *);
+char *promptAddAnother();
 #endif //CS201_PORTFOLIO_USERINTERFACE_H

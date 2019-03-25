@@ -3,6 +3,7 @@
 #include "hashtable.h"
 #include "sll.h"
 #include "userInterface.h"
+#include "interfaceController.h"
 
 int main() {
     char *filename= "resources/test.csv";
@@ -19,17 +20,7 @@ int main() {
         free(choice);
         switch (choiceValue){
             case 1:
-                printLoadingMessage();
-                HASHTABLE *temp;
-                temp=readFile(filename);
-                printf("done.\n");
-                printf("Enter the manufacture of your product\n");
-                char *string =cleanInput(getMenuChoice());
-                printf("Looking up manufacture \"%s\"\n",string);
-                SLL *manufactureList = lookupManufacture(temp, string);
-                free(string);
-                displaySLL(manufactureList, stdin);
-                freeTable(temp);
+                runLogging(filename);
                 break;
 
             default:
