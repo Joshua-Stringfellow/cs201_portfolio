@@ -6,8 +6,8 @@
 #include "interfaceController.h"
 
 int main() {
-    char *filename= "resources/test.csv";
-
+    char *filename= "resources/food_nutrient_db.csv";
+    //char *filename= "resources/test.csv";
     printWelcomeMessage();
     char *help = promptUserForHelp();
     if (strcmp(help, "help") == 0) {

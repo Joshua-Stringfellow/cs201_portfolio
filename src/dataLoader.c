@@ -11,22 +11,29 @@
 //Private Functions
 void parseString(HASHTABLE*myTable, char *string){
     char delim[] = "~";
-    char *values[10];
+    char *values[11];
     char *ptr = strtok(string, delim);
     int c = 0;
     while (ptr != NULL) {
+        if (strlen(ptr) ==1)
+            ptr="1";
         values[c] = ptr;
         ptr = strtok(NULL, delim);
         c ++;
     }
+    //Some of the lines in the database are missing information
+    while (c <=10){
+        values[c]="";
+        c++;
+    }
     insertTable(myTable, createFoodItem(values));
-    for (int i=0; i<10; i++){
+    for (int i=0; i<11; i++){
         values[i] = "";
     }
 }
 //Public Functions
 HASHTABLE *readFile(char *databaseFile){
-    HASHTABLE *table= createHashTable(50);
+    HASHTABLE *table= createHashTable(100000);
     FILE *fp;
     char *line = NULL;
     size_t len = 0;
