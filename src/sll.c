@@ -79,14 +79,14 @@ void *removeSLL(SLL *items,int index){
 
 void *getSLL(SLL *items,int index){
     assert(index >= 0);
-    FOODITEM *FOODITEM = items->head;
-    if (index == sizeSLL(items)-1)
+    FOODITEM *item = items->head;
+    if (index == sizeSLL(items))
         return items->tail;
-    for(int i = 0; i<index;i++)
+    for(int i = 1; i<index;i++)
     {
-        FOODITEM = FOODITEM->next;
+        item = item ->next;
     }
-    return FOODITEM;
+    return item;
 }
 
 
@@ -121,4 +121,4 @@ void freeSLL(SLL *items){
     }
     items->tail=NULL;
     free(items);
-   }
+}

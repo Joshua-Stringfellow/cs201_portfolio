@@ -18,8 +18,7 @@ static size_t hash(const char* cp, uint size)
 }
 /*https://www.tutorialgateway.org/c-program-to-convert-string-to-lowercase/*/
 char *lowerString(char* key){
-    char *lowerKey = calloc(strlen(key), sizeof(char));
-    strcpy(lowerKey, key);
+    char *lowerKey = strdup(key);
     for (int i=0; i<strlen(key); i++ ){
         if(lowerKey[i] >= 'A' && lowerKey[i] <= 'Z') {
             lowerKey[i] = lowerKey[i] + 32;
@@ -31,8 +30,7 @@ char *lowerString(char* key){
 TABLEITEM *createTableItem(FOODITEM *myItem){
     char *key = lowerString(myItem->manufacture);
     TABLEITEM *newTableItem = malloc(sizeof(TABLEITEM));
-    newTableItem -> key = calloc(strlen(myItem->manufacture), sizeof(char));
-    strcpy(newTableItem->key, key);
+    newTableItem -> key = key;
     newTableItem -> manufactureList = newSLL();
     insertSLL(newTableItem->manufactureList, myItem);
 
@@ -46,7 +44,6 @@ TABLEITEM *getTableItem(HASHTABLE *mytable, size_t hashValue){
 SLL *getManufactureList(TABLEITEM* myItem){
     return myItem->manufactureList;
 }
-
 char *getItemKey(HASHTABLE *mytable, size_t hashValue){
     return mytable->items[hashValue]->key;
 }
@@ -74,6 +71,22 @@ void addManufactureList(HASHTABLE *myTable, size_t hashValue, FOODITEM *newItem)
 void displayManufactureList(SLL *manufactureList){
     displaySLL(manufactureList,stdout);
 }
+
+void insertTableItem(HASHTABLE *newTable, TABLEITEM *item){
+    size_t hashValue = hash(item->key,newTable->size);
+    newTable -> items[hashValue] = item;
+}
+void expandTable(HASHTABLE *oldTable){
+    HASHTABLE *newTable = createHashTable(oldTable->size * 2);
+    for (int i=0; i<oldTable->size; i++){
+        if (oldTable -> items[i] !=0) {
+            insertTableItem(newTable, oldTable->items[i]);
+            oldTable->items[i] = 0;
+        }
+        newTable -> count = oldTable -> count;
+    }
+    freeTable(oldTable);
+}
 //public
 HASHTABLE *createHashTable(uint size){
     HASHTABLE *newTable = malloc(sizeof(HASHTABLE));
@@ -86,7 +99,7 @@ HASHTABLE *createHashTable(uint size){
 
 void insertTable(HASHTABLE *myTable, FOODITEM *newItem){
     char *key = lowerString(newItem->manufacture);
-    size_t hashValue =hash(key, myTable->size);
+    size_t hashValue = hash(key, myTable->size);
     //printf("\nHash value: %lu ", hashValue);
     if (tablePositionEmpty(myTable, hashValue)){
       addNewTableItem(myTable, hashValue, newItem);
@@ -100,11 +113,16 @@ void insertTable(HASHTABLE *myTable, FOODITEM *newItem){
     else{
         while (!tablePositionEmpty(myTable, hashValue)) {
             hashValue++;
-            if (hashValue >= myTable->size)
+            if (hashValue >= myTable->size -1)
                 hashValue = 0;
         }
         addNewTableItem(myTable, hashValue, newItem);
         //displaySLL(getTableItem(myTable,hashValue) ->manufactureList, stdout);
+    }
+    if (myTable->count >= myTable->size-1){
+        exit(10);
+        //expandTable(myTable);
+
     }
 }
 
@@ -130,6 +148,6 @@ void freeTable(HASHTABLE *myTable){
         if (myTable->items[i] != 0)
             freeTableItem(myTable->items[i]);
     }
-    free(myTable->items);
+    //free(myTable->items);
     free(myTable);
 }
