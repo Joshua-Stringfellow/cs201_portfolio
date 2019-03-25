@@ -16,16 +16,29 @@ static size_t hash(const char* cp, uint size)
     hash = hash % size;
     return hash;
 }
+/*https://www.tutorialgateway.org/c-program-to-convert-string-to-lowercase/*/
+char *lowerString(char* key){
+    char *lowerKey = calloc(strlen(key), sizeof(char));
+    strcpy(lowerKey, key);
+    for (int i=0; i<strlen(key); i++ ){
+        if(lowerKey[i] >= 'A' && lowerKey[i] <= 'Z') {
+            lowerKey[i] = lowerKey[i] + 32;
+        }
+    }
+    return lowerKey;
+}
 
 TABLEITEM *createTableItem(FOODITEM *myItem){
+    char *key = lowerString(myItem->manufacture);
     TABLEITEM *newTableItem = malloc(sizeof(TABLEITEM));
-    newTableItem -> key = malloc(sizeof (myItem->manufacture) + 1);
-    strcpy(newTableItem->key, myItem -> manufacture);
+    newTableItem -> key = calloc(strlen(myItem->manufacture), sizeof(char));
+    strcpy(newTableItem->key, key);
     newTableItem -> manufactureList = newSLL();
     insertSLL(newTableItem->manufactureList, myItem);
 
     return newTableItem;
 }
+
 TABLEITEM *getTableItem(HASHTABLE *mytable, size_t hashValue){
     return mytable->items[hashValue];
 }
@@ -72,14 +85,15 @@ HASHTABLE *createHashTable(uint size){
 }
 
 void insertTable(HASHTABLE *myTable, FOODITEM *newItem){
-    size_t hashValue =hash(newItem->manufacture, myTable->size);
+    char *key = lowerString(newItem->manufacture);
+    size_t hashValue =hash(key, myTable->size);
     //printf("\nHash value: %lu ", hashValue);
     if (tablePositionEmpty(myTable, hashValue)){
       addNewTableItem(myTable, hashValue, newItem);
       //displaySLL(getTableItem(myTable,hashValue) ->manufactureList, stdout);
 
     }
-    else if (! tablePositionEmpty(myTable, hashValue) && ! isCollision(getItemKey(myTable, hashValue), newItem->manufacture)){
+    else if (! tablePositionEmpty(myTable, hashValue) && ! isCollision(getItemKey(myTable, hashValue), key)){
         addManufactureList(myTable, hashValue, newItem);
         //displaySLL(getTableItem(myTable,hashValue) ->manufactureList, stdout);
     }
@@ -95,9 +109,14 @@ void insertTable(HASHTABLE *myTable, FOODITEM *newItem){
 }
 
 SLL *lookupManufacture(HASHTABLE *mytable, char *manufacture){
-    size_t hashValue = hash(manufacture, mytable->size);
-    if (!tablePositionEmpty(mytable, hashValue) && !isCollision(getItemKey(mytable, hashValue), manufacture)){
-        displayManufactureList(getManufactureList(getTableItem(mytable,hashValue)));
+    char *key = lowerString(manufacture);
+    size_t hashValue = hash(key, mytable->size);
+    int isEmpty=tablePositionEmpty(mytable, hashValue);
+    if (!isEmpty && !isCollision(getItemKey(mytable, hashValue), key)){
+        return getManufactureList(getTableItem(mytable,hashValue));
+    }
+    else if (isEmpty){
+        return NULL;
     }
 }
 void freeTableItem(TABLEITEM *myItme){
