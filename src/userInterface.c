@@ -37,3 +37,9 @@ char* cleanInput(char *string){
         string[strlen(string) - 1] = 0;
     return string;
 }
+
+char *promptAddAnother(){
+    char *another = calloc(2, sizeof(char));
+    fgets(another, 2, stdin);
+    return another;
+}
