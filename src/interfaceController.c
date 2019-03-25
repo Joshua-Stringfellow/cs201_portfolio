@@ -7,6 +7,7 @@
 #include "userInterface.h"
 #include "hashtable.h"
 #include "dataLoader.h"
+#include "logger.h"
 
 void runLogging(char *filename){
     printLoadingMessage();
@@ -25,6 +26,12 @@ void runLogging(char *filename){
         } else {
             printf("The manufacturer requested cannot be found.\n");
         }
+        printf("Is your item in the above list? Enter the item number to log it.\n");
+        char itemNumber[8];
+        fgets(itemNumber, 8, stdin);
+        int index = atoi(itemNumber);
+        FOODITEM *item = getSLL(manufactureList, index);
+        writeToFile(item, stdout);
 
         printf("Would you like to add another item? Y/n \n");
 //        char *another = promptAddAnother();

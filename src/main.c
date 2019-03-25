@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "dataLoader.h"
-#include "hashtable.h"cd
+#include "hashtable.h"
 #include "sll.h"
 #include "userInterface.h"
 #include "interfaceController.h"

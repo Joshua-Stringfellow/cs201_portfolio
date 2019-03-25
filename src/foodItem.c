@@ -5,8 +5,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "foodItem.h"
-//TODO: implement delete method
-//
 
 FOODITEM *createFoodItem(char *values[]){
     FOODITEM *newItem = malloc(sizeof(FOODITEM));
@@ -32,5 +30,5 @@ FOODITEM *createFoodItem(char *values[]){
 }
 
 void display(FOODITEM *myItem, FILE *output){
-    printf("Id: %d", myItem -> id);
+    fprintf(output, "Id: %d\n", myItem -> id);
 }
