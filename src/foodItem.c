@@ -32,6 +32,6 @@ FOODITEM *createFoodItem(char *values[]){
     return newItem;
 }
 
-void display(FOODITEM *myItem, FILE *output){
-    fprintf(output, "Id: %d\n", myItem -> id);
+void displayFoodItem(FOODITEM *myItem, FILE *output){
+    fprintf(output,"ID: %d Product Name: %s \n", myItem->id, myItem->productName);
 }

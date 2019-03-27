@@ -16,6 +16,9 @@ void runLogging(char *filename){
     printf("done.\n");
     int run = 1;
     while (run == 1) {
+        char logFile[30];
+        printf("Enter your myBama username(in most cases first initial middle initial last name)\n");
+        fgets(logFile, 30, stdin);
         printf("Enter the manufacture of your product\n");
         char *string = cleanInput(getMenuChoice());
         printf("Looking up manufacture \"%s\"\n", string);
@@ -31,14 +34,14 @@ void runLogging(char *filename){
         fgets(itemNumber, 8, stdin);
         int index = atoi(itemNumber);
         FOODITEM *item = getSLL(manufactureList, index);
-        writeToFile(item, stdout);
-
+        FILE *log = fopen(strcat(logFile, ".log"), "w");
+        writeToFile(item,log );
+        fclose(log);
         printf("Would you like to add another item? Y/n \n");
-//        char *another = promptAddAnother();
-//        while(strcmp(another, "y") !=0 || strcmp(another,"n")!=0){
-//            another = promptAddAnother();
-//        }
-        run = 0;
+        char another[2];
+        fgets(another, 2, stdin);
+        if (strcmp(another, "n") == 0 || strcmp(another, "N") == 0)
+            run = 0;
     }
 
     freeTable(temp);

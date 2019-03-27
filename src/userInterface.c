@@ -23,6 +23,7 @@ void showMenu(){
     printf("1.Log your food\n");
     printf("2.Review your log\n");
     printf("3.Some other options\n");
+    printf("Type exit to end session\n");
 }
 char *getMenuChoice(){
     char *string = calloc(100, sizeof(char));

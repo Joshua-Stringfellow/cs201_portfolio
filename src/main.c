@@ -14,18 +14,24 @@ int main() {
         printHelpMessage();
     }
     else{
-        showMenu();
-        char *choice =cleanInput(getMenuChoice());
-        int choiceValue = atoi(choice);
-        free(choice);
-        switch (choiceValue){
-            case 1:
-                runLogging(filename);
+        char exitStatus[5];
+        while(1){
+            showMenu();
+            char *choice =cleanInput(getMenuChoice());
+            if (strcmp(choice,"exit") == 0){
                 break;
+            }
+            int choiceValue = atoi(choice);
+            free(choice);
+            switch (choiceValue){
+                case 1:
+                    runLogging(filename);
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
 
+            }
         }
     }
     free(help);

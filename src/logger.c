@@ -7,5 +7,6 @@
 
 
 void writeToFile(FOODITEM *myItem, FILE *fp){
-    display(myItem, fp);
+    displayFoodItem(myItem, fp);
+    printf("Item successfully logged\n");
 }

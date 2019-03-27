@@ -99,7 +99,8 @@ void displaySLL(SLL *items, FILE *fp){
         FOODITEM *current = items->head;
         int counter = 1;
         while (current != NULL) {
-            printf("\n%d. ID: %d Product Name: %s \n", counter, current->id, current->productName);
+            fprintf(fp, "%d. ",counter);
+            displayFoodItem(current, fp);
             current = current->next;
             counter++;
         }
