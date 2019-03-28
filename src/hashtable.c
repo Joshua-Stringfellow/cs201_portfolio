@@ -133,9 +133,16 @@ SLL *lookupManufacture(HASHTABLE *mytable, char *manufacture){
     if (!isEmpty && !isCollision(getItemKey(mytable, hashValue), key)){
         return getManufactureList(getTableItem(mytable,hashValue));
     }
-    else if (isEmpty){
-        return NULL;
+    else if (isCollision(key, manufacture)){
+        while (!isEmpty){
+            hashValue++;
+            isEmpty = tablePositionEmpty(mytable, hashValue);
+            if (isEmpty)
+                return NULL;
+        }
+        return getManufactureList(getTableItem(mytable, hashValue));
     }
+    return NULL;
 }
 void freeTableItem(TABLEITEM *myItme){
     free(myItme->key);
