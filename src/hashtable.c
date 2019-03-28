@@ -54,7 +54,7 @@ int tablePositionEmpty(HASHTABLE *myTable, size_t hashValue){
 }
 
 int isCollision(char *key, char *manufacture){
-    return strcmp(key, manufacture);
+    return strncmp(key, manufacture, 100);
 }
 
 void addNewTableItem(HASHTABLE *myTable, size_t  hashValue,FOODITEM *newItem){
