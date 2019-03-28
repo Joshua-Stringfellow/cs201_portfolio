@@ -139,10 +139,9 @@ SLL *lookupManufacture(HASHTABLE *mytable, char *manufacture){
         while (!isEmpty){
             hashValue++;
             isEmpty = tablePositionEmpty(mytable, hashValue);
-            if (isEmpty) {
+            if (isEmpty)
                 free(key);
                 return NULL;
-            }
         }
         free(key);
         return getManufactureList(getTableItem(mytable, hashValue));
