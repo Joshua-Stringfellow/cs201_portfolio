@@ -59,3 +59,7 @@ void runLogging(char *filename){
     free(logFile);
     freeTable(temp);
 }
+
+void updateLog(){
+    updateFile();
+}

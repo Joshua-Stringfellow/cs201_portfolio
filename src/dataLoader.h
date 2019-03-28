@@ -8,6 +8,7 @@
 #include "hashtable.h"
 
 HASHTABLE *readFile(char *);
+void updateFile();
 #endif //CS201_PORTFOLIO_FILEREADER_H
 
 

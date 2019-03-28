@@ -29,6 +29,8 @@ int main() {
                 case 1:
                     runLogging(filename);
                     break;
+                case 2:
+                    updateLog();
 
                 default:
                     break;
