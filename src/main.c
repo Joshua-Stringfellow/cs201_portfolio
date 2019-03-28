@@ -12,6 +12,7 @@ int main() {
     char *help = promptUserForHelp();
     if (strcmp(help, "help") == 0) {
         printHelpMessage();
+        free(help);
     }
     else{
         char exitStatus[5];
@@ -19,6 +20,7 @@ int main() {
             showMenu();
             char *choice =cleanInput(getMenuChoice());
             if (strcmp(choice,"exit") == 0){
+                free(choice);
                 break;
             }
             int choiceValue = atoi(choice);

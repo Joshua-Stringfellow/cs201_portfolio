@@ -108,7 +108,7 @@ void displaySLL(SLL *items, FILE *fp){
 }
 
 void freeSLL(SLL *items){
-    FOODITEM * curr;
+    FOODITEM * curr= NULL;
 
     while (items->head != 0)
     {

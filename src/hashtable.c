@@ -124,6 +124,7 @@ void insertTable(HASHTABLE *myTable, FOODITEM *newItem){
         //expandTable(myTable);
 
     }
+    free(key);
 }
 
 SLL *lookupManufacture(HASHTABLE *mytable, char *manufacture){
@@ -131,30 +132,36 @@ SLL *lookupManufacture(HASHTABLE *mytable, char *manufacture){
     size_t hashValue = hash(key, mytable->size);
     int isEmpty=tablePositionEmpty(mytable, hashValue);
     if (!isEmpty && !isCollision(getItemKey(mytable, hashValue), key)){
+        free(key);
         return getManufactureList(getTableItem(mytable,hashValue));
     }
     else if (isCollision(key, manufacture)){
         while (!isEmpty){
             hashValue++;
             isEmpty = tablePositionEmpty(mytable, hashValue);
-            if (isEmpty)
+            if (isEmpty) {
+                free(key);
                 return NULL;
+            }
         }
+        free(key);
         return getManufactureList(getTableItem(mytable, hashValue));
     }
+    free(key);
     return NULL;
 }
-void freeTableItem(TABLEITEM *myItme){
-    free(myItme->key);
-    freeSLL(myItme->manufactureList);
-    free(myItme);
+void freeTableItem(TABLEITEM *myItem){
+    free(myItem->key);
+    freeSLL(myItem->manufactureList);
+    free(myItem);
 }
 
 void freeTable(HASHTABLE *myTable){
-    for (int i=0; i< myTable->size; i++){
+    for (int i=0; i < myTable->size; i++){
         if (myTable->items[i] != 0)
             freeTableItem(myTable->items[i]);
     }
     //free(myTable->items);
+    free(myTable->items);
     free(myTable);
 }

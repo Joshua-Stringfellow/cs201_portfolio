@@ -46,6 +46,7 @@ void runLogging(char *filename){
             if (item!=NULL)
                 writeToFile(item, log);
             fclose(log);
+            free(itemNumber);
         } else {
             printf("The manufacturer requested cannot be found.\n");
         }
@@ -55,6 +56,6 @@ void runLogging(char *filename){
             run = 0;
         free(another);
     }
-
+    free(logFile);
     freeTable(temp);
 }
