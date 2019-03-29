@@ -21,12 +21,27 @@ char* cleanInput(char *string){
         string[strlen(string) - 1] = 0;
     return string;
 }
+
 char *getFileName(){
     printf("Enter your myBama username(in most cases first initial middle initial last name)\n");
     char *logFile = cleanInput(getMenuChoice());
     return logFile;
 }
-
+FOODITEM *updateLine(char *str){
+    char delim[2] = " ";
+    char *ptr= strtok(str, delim);
+    int index = 1;
+    int value = 0;
+    char *values[11];
+    while(ptr != NULL)
+    {
+        ptr = strtok(NULL, delim);
+        if (index % 2 == 0)
+            values[value] = ptr;
+        index ++;
+    }
+    return createFoodItem(values);
+}
 //https://www.w3resource.com/c-programming-exercises/file-handling/c-file-handling-exercise-9.php
 void updateFile(char *fname){
     FILE *fptr1, *fptr2;
@@ -56,6 +71,7 @@ void updateFile(char *fname){
     lno++;
     /* get the new line from the user */
     printf(" Input how many servings you had: ");
+    int servings = 2;
     // copy all contents to the temporary file other except specific line
     while (!feof(fptr1))
     {
@@ -70,7 +86,9 @@ void updateFile(char *fname){
             }
             else
             {
-                fprintf(fptr2, "%s", newln);
+                FOODITEM *update = updateLine(str);
+                displayFoodItem(update,stdout);
+                //fprintf(fptr2, "%s", newln);
             }
         }
     }

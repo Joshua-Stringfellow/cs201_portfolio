@@ -28,5 +28,5 @@ FOODITEM *createFoodItem(char *values[]){
 }
 
 void displayFoodItem(FOODITEM *myItem, FILE *output){
-    fprintf(output,"Product Name: %s Calories: %.2f Fat: %.2f Carbs: %.2f Protein: %.2f\n", myItem->productName, myItem->calories, myItem->fat, myItem->carbs, myItem->protein);
+    fprintf(output,"ProductName: %s Calories: %.2f Fat: %.2f Carbs: %.2f Protein: %.2f\n", myItem->productName, myItem->calories, myItem->fat, myItem->carbs, myItem->protein);
 }
