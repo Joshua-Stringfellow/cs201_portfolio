@@ -8,7 +8,7 @@
 
 //private
 /* D. J. Bernstein hash function https://codereview.stackexchange.com/questions/85556/simple-string-hashing-algorithm-implementation*/
-static size_t hash(const char* cp, uint size)
+static size_t hash(const char* cp, size_t size)
 {
     size_t hash = 5381;
     while (*cp)
@@ -72,28 +72,44 @@ void displayManufactureList(SLL *manufactureList){
     displaySLL(manufactureList,stdout);
 }
 
-void insertTableItem(HASHTABLE *newTable, TABLEITEM *item){
-    size_t hashValue = hash(item->key,newTable->size);
-    newTable -> items[hashValue] = item;
+void insertExistingTableItem(HASHTABLE *myTable, TABLEITEM *item){
+    char *key = item->key;
+    size_t hashValue = hash(key,myTable->size);
+    if (tablePositionEmpty(myTable, hashValue)){
+        myTable -> items[hashValue] = item;
+    }
+    else{
+        while (!tablePositionEmpty(myTable, hashValue)) {
+            hashValue++;
+            if (hashValue >= myTable->size -1)
+                hashValue = 0;
+        }
+        myTable -> items[hashValue] = item;
+    }
+    free(key);
 }
 void expandTable(HASHTABLE *oldTable){
-    HASHTABLE *newTable = createHashTable(oldTable->size * 2);
-    for (int i=0; i<oldTable->size; i++){
+    size_t size = oldTable -> size * 2;
+    HASHTABLE *newTable = createHashTable(size);
+    TABLEITEM **temp = oldTable -> items;
+    //free(oldTable->items);
+    //oldTable -> items = realloc(oldTable->items,size);
+    for (int i=0; i < oldTable->size; i++){
         if (oldTable -> items[i] !=0) {
-            insertTableItem(newTable, oldTable->items[i]);
-            oldTable->items[i] = 0;
+            insertExistingTableItem(newTable, temp[i]);
         }
-        newTable -> count = oldTable -> count;
     }
+    //oldTable -> size = size;
+    newTable -> count = oldTable -> count;
     freeTable(oldTable);
+    oldTable = newTable;
 }
 //public
-HASHTABLE *createHashTable(uint size){
+HASHTABLE *createHashTable(size_t size){
     HASHTABLE *newTable = malloc(sizeof(HASHTABLE));
     newTable -> size = size;
     newTable -> count = 0;
-
-    newTable ->items = calloc(size, sizeof(FOODITEM));
+    newTable -> items = calloc(size, sizeof(FOODITEM));
     return newTable;
 }
 
@@ -121,7 +137,8 @@ void insertTable(HASHTABLE *myTable, FOODITEM *newItem){
     }
     if (myTable->count >= myTable->size-1){
         exit(10);
-        //expandTable(myTable);
+//        expandTable(myTable);
+//        addNewTableItem(myTable,hashValue, newItem);
 
     }
     free(key);
@@ -141,7 +158,7 @@ SLL *lookupManufacture(HASHTABLE *mytable, char *manufacture){
             isEmpty = tablePositionEmpty(mytable, hashValue);
             if (isEmpty)
                 free(key);
-                return NULL;
+            return NULL;
         }
         free(key);
         return getManufactureList(getTableItem(mytable, hashValue));
