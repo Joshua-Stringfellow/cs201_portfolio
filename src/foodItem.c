@@ -9,7 +9,6 @@
 FOODITEM *createFoodItem(char *values[]){
     FOODITEM *newItem = malloc(sizeof(FOODITEM));
     char *stopString="";
-    newItem -> id = atoi(values[0]);
     newItem -> productName = strdup(values[1]);
     newItem -> manufacture = strdup(values[2]);
     newItem -> gMl = strdup(values[8]);
@@ -27,6 +26,6 @@ FOODITEM *createFoodItem(char *values[]){
     return newItem;
 }
 
-void displayFoodItem(FOODITEM *myItem, FILE *output){
-    fprintf(output,"ProductName: %s Calories: %.2f Fat: %.2f Carbs: %.2f Protein: %.2f\n", myItem->productName, myItem->calories, myItem->fat, myItem->carbs, myItem->protein);
+void displayFoodItem(FOODITEM *myItem, FILE *output, long int servings){
+    fprintf(output,"ProductName: %s Calories: %.2f Fat: %.2f Carbs: %.2f Protein: %.2f\n", myItem->productName, myItem->calories*servings, myItem->fat*servings, myItem->carbs*servings, myItem->protein*servings);
 }

@@ -45,11 +45,12 @@ FOODITEM *updateLine(char *str){
 //https://www.w3resource.com/c-programming-exercises/file-handling/c-file-handling-exercise-9.php
 void updateFile(char *fname){
     FILE *fptr1, *fptr2;
-    int lno, linectr = 0;
+    int linectr = 0;
+    char *stop;
     char str[MAX];
     char newln[MAX], temp[] = "temp.txt";
 
-    printf("\n\n Replace a specific line in a text file with a new text :\n");
+    printf("\n\n Update the servings for a specific item in your log :\n");
     printf("-------------------------------------------------------------\n");
     //printf(" Input the file name to be opened( ex. jrstringfellow.log) : ");
     fptr1 = fopen(fname, "r");
@@ -67,11 +68,12 @@ void updateFile(char *fname){
     }
     /* get the line number to delete the specific line */
     printf(" Input the line no you want to replace : ");
-    scanf("%d", &lno);
+    long int lno = strtol(cleanInput(getMenuChoice()),&stop, 10);
     lno++;
     /* get the new line from the user */
     printf(" Input how many servings you had: ");
-    int servings = 2;
+    char *newServings = cleanInput(getMenuChoice());
+    long int servings = strtol(newServings, &stop, 10);
     // copy all contents to the temporary file other except specific line
     while (!feof(fptr1))
     {
@@ -87,7 +89,7 @@ void updateFile(char *fname){
             else
             {
                 FOODITEM *update = updateLine(str);
-                displayFoodItem(update,stdout);
+                displayFoodItem(update,stdout,servings);
                 //fprintf(fptr2, "%s", newln);
             }
         }
@@ -109,7 +111,7 @@ void deleteLine() {
     printf("\n\n Delete a specific line from a file :\n");
     printf("-----------------------------------------\n");
     printf(" Input the file name to be opened : ");
-    scanf("%s", fname);
+    fname = getFileName();
     fptr1 = fopen(fname, "r");
     if (!fptr1) {
         printf(" File not found or unable to open the input file!!\n");
@@ -170,14 +172,22 @@ void runLogging(char *filename){
             char *itemNumber=cleanInput(getMenuChoice());
             char *stop;
             long int index = strtol(itemNumber, &stop, 10);
+            long int servings = 1;
             FOODITEM *item = NULL;
-            if (index <= manufactureList -> size)
+            if (index <= manufactureList -> size) {
                 item = getSLL(manufactureList, index);
-            else
+                printf("Enter the number of servings:\n");
+                char *servingStr = cleanInput(getMenuChoice());
+                servings = strtol(servingStr, &stop, 10);
+                //TODO check input error
+                free(servingStr);
+            }
+            else {
                 printf("Invalid item number\n");
+            }
             FILE *log = fopen(strcat(logFile, ".log"), "a");
             if (item!=NULL)
-                writeToFile(item, log);
+                writeToFile(item, log, servings);
             fclose(log);
             free(itemNumber);
         } else {

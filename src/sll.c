@@ -100,7 +100,7 @@ void displaySLL(SLL *items, FILE *fp){
         int counter = 1;
         while (current != NULL) {
             fprintf(fp, "%d. ",counter);
-            displayFoodItem(current, fp);
+            displayFoodItem(current, fp, 1);
             current = current->next;
             counter++;
         }

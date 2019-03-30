@@ -23,6 +23,6 @@ typedef struct foodItem{
 }FOODITEM;
 
 FOODITEM *createFoodItem(char *values[]);
-void displayFoodItem(FOODITEM *,FILE *);
+void displayFoodItem(FOODITEM *,FILE *, long int);
 #endif //CS201_PORTFOLIO_DATASTRUCTURE_H
 
