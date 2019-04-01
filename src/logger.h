@@ -8,6 +8,6 @@
 #include "sll.h"
 #include "foodItem.h"
 
-void writeToFile(FOODITEM *, FILE *);
+void writeToFile(FOODITEM *, FILE *, long int servings);
 
 #endif //CS201_PORTFOLIO_LOGGER_H

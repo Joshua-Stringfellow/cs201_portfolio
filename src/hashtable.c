@@ -8,7 +8,7 @@
 
 //private
 /* D. J. Bernstein hash function https://codereview.stackexchange.com/questions/85556/simple-string-hashing-algorithm-implementation*/
-static size_t hash(const char* cp, uint size)
+static size_t hash(const char* cp, size_t size)
 {
     size_t hash = 5381;
     while (*cp)
@@ -37,6 +37,13 @@ TABLEITEM *createTableItem(FOODITEM *myItem){
     return newTableItem;
 }
 
+TABLEITEM *createExisitingTableItem(char *key, SLL *list){
+    TABLEITEM *newTableItem = malloc(sizeof(TABLEITEM));
+    newTableItem -> key = key;
+    newTableItem -> manufactureList = list;
+
+    return newTableItem;
+}
 TABLEITEM *getTableItem(HASHTABLE *mytable, size_t hashValue){
     return mytable->items[hashValue];
 }
@@ -54,7 +61,7 @@ int tablePositionEmpty(HASHTABLE *myTable, size_t hashValue){
 }
 
 int isCollision(char *key, char *manufacture){
-    return strcmp(key, manufacture);
+    return strncmp(key, manufacture, 100);
 }
 
 void addNewTableItem(HASHTABLE *myTable, size_t  hashValue,FOODITEM *newItem){
@@ -72,35 +79,57 @@ void displayManufactureList(SLL *manufactureList){
     displaySLL(manufactureList,stdout);
 }
 
-void insertTableItem(HASHTABLE *newTable, TABLEITEM *item){
-    size_t hashValue = hash(item->key,newTable->size);
-    newTable -> items[hashValue] = item;
-}
-void expandTable(HASHTABLE *oldTable){
-    HASHTABLE *newTable = createHashTable(oldTable->size * 2);
-    for (int i=0; i<oldTable->size; i++){
-        if (oldTable -> items[i] !=0) {
-            insertTableItem(newTable, oldTable->items[i]);
-            oldTable->items[i] = 0;
-        }
-        newTable -> count = oldTable -> count;
+void insertExistingTableItem(HASHTABLE *myTable, char * key, SLL *manufactureList){
+    size_t hashValue = hash(key,myTable->size);
+    if (tablePositionEmpty(myTable, hashValue)){
+        myTable -> items[hashValue] = createExisitingTableItem(key, manufactureList);
     }
-    freeTable(oldTable);
+    else{
+        while (!tablePositionEmpty(myTable, hashValue)) {
+            hashValue++;
+            if (hashValue >= myTable->size -1)
+                hashValue = 0;
+        }
+        myTable -> items[hashValue] = createExisitingTableItem(key, manufactureList);
+    }
 }
+
+// adopted from https://github.com/jamesroutley/write-a-hash-table/tree/master/06-resizing
+void expandTable(HASHTABLE *oldTable){
+    size_t size = oldTable -> size * 2;
+    HASHTABLE *newTable = createHashTable(size);
+    for (int i= 0; i < oldTable -> size; i++){
+        TABLEITEM *item = oldTable -> items[i];
+        if (item != NULL){
+            insertExistingTableItem(newTable, item->key, item->manufactureList);
+        }
+    }
+    TABLEITEM **tmpItems = oldTable -> items;
+    oldTable -> items = newTable -> items;
+    newTable -> items = tmpItems;
+
+    size_t oldsize = oldTable -> size;
+    oldTable -> size = newTable -> size;
+    newTable -> size = oldsize;
+}
+
 //public
-HASHTABLE *createHashTable(uint size){
+HASHTABLE *createHashTable(size_t size){
     HASHTABLE *newTable = malloc(sizeof(HASHTABLE));
     newTable -> size = size;
     newTable -> count = 0;
-
-    newTable ->items = calloc(size, sizeof(FOODITEM));
+    newTable -> items = calloc(size, sizeof(FOODITEM));
     return newTable;
 }
 
 void insertTable(HASHTABLE *myTable, FOODITEM *newItem){
     char *key = lowerString(newItem->manufacture);
-    size_t hashValue = hash(key, myTable->size);
+    //size_t hashValue = hash(key, myTable->size);
     //printf("\nHash value: %lu ", hashValue);
+    if (myTable->count >= myTable->size/2){
+        expandTable(myTable);
+    }
+    size_t hashValue = hash(key, myTable->size);
     if (tablePositionEmpty(myTable, hashValue)){
       addNewTableItem(myTable, hashValue, newItem);
       //displaySLL(getTableItem(myTable,hashValue) ->manufactureList, stdout);
@@ -119,11 +148,7 @@ void insertTable(HASHTABLE *myTable, FOODITEM *newItem){
         addNewTableItem(myTable, hashValue, newItem);
         //displaySLL(getTableItem(myTable,hashValue) ->manufactureList, stdout);
     }
-    if (myTable->count >= myTable->size-1){
-        exit(10);
-        //expandTable(myTable);
-
-    }
+    free(key);
 }
 
 SLL *lookupManufacture(HASHTABLE *mytable, char *manufacture){
@@ -131,23 +156,35 @@ SLL *lookupManufacture(HASHTABLE *mytable, char *manufacture){
     size_t hashValue = hash(key, mytable->size);
     int isEmpty=tablePositionEmpty(mytable, hashValue);
     if (!isEmpty && !isCollision(getItemKey(mytable, hashValue), key)){
+        free(key);
         return getManufactureList(getTableItem(mytable,hashValue));
     }
-    else if (isEmpty){
-        return NULL;
+    else if (isCollision(key, manufacture)){
+        while (!isEmpty){
+            hashValue++;
+            isEmpty = tablePositionEmpty(mytable, hashValue);
+            if (isEmpty)
+                free(key);
+            return NULL;
+        }
+        free(key);
+        return getManufactureList(getTableItem(mytable, hashValue));
     }
+    free(key);
+    return NULL;
 }
-void freeTableItem(TABLEITEM *myItme){
-    free(myItme->key);
-    freeSLL(myItme->manufactureList);
-    free(myItme);
+void freeTableItem(TABLEITEM *myItem){
+    free(myItem->key);
+    freeSLL(myItem->manufactureList);
+    free(myItem);
 }
 
 void freeTable(HASHTABLE *myTable){
-    for (int i=0; i< myTable->size; i++){
+    for (int i=0; i < myTable->size; i++){
         if (myTable->items[i] != 0)
             freeTableItem(myTable->items[i]);
     }
     //free(myTable->items);
+    free(myTable->items);
     free(myTable);
 }

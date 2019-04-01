@@ -7,7 +7,6 @@
 #include "dataLoader.h"
 #include "foodItem.h"
 #include "hashtable.h"
-
 //Private Functions
 void parseString(HASHTABLE*myTable, char *string){
     char delim[] = "~";
@@ -33,7 +32,7 @@ void parseString(HASHTABLE*myTable, char *string){
 }
 //Public Functions
 HASHTABLE *readFile(char *databaseFile){
-    HASHTABLE *table= createHashTable(100000);
+    HASHTABLE *table= createHashTable(1);
     FILE *fp;
     char *line = NULL;
     size_t len = 0;
@@ -50,3 +49,7 @@ HASHTABLE *readFile(char *databaseFile){
     fclose(fp);
     return table;
 }
+
+
+SLL *loadLog();
+

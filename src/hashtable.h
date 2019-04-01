@@ -14,14 +14,15 @@ typedef struct tableItem{
 }TABLEITEM;
 
 typedef struct hashtable{
-    uint size;
+    size_t size;
     int count;
     TABLEITEM **items;
 
 }HASHTABLE;
 
-HASHTABLE *createHashTable(uint size);
+HASHTABLE *createHashTable(size_t size);
 void insertTable(HASHTABLE *, FOODITEM *);
 SLL *lookupManufacture(HASHTABLE *, char *);
+void freeTableItem(TABLEITEM*);
 void freeTable(HASHTABLE *);
 #endif //CS201_PORTFOLIO_HASHTABLE_H
