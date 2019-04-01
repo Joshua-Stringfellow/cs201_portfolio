@@ -102,6 +102,8 @@ void expandTable(HASHTABLE *oldTable){
         TABLEITEM *item = oldTable -> items[i];
         if (item != NULL){
             insertExistingTableItem(newTable, item->key, item->manufactureList);
+            oldTable -> items[i] -> manufactureList = NULL;
+            oldTable -> items [i] -> key = NULL;
         }
     }
     TABLEITEM **tmpItems = oldTable -> items;
@@ -111,6 +113,7 @@ void expandTable(HASHTABLE *oldTable){
     size_t oldsize = oldTable -> size;
     oldTable -> size = newTable -> size;
     newTable -> size = oldsize;
+    freeTable(newTable);
 }
 
 //public
@@ -174,8 +177,10 @@ SLL *lookupManufacture(HASHTABLE *mytable, char *manufacture){
     return NULL;
 }
 void freeTableItem(TABLEITEM *myItem){
-    free(myItem->key);
-    freeSLL(myItem->manufactureList);
+    if (myItem -> key != NULL)
+        free(myItem->key);
+    if (myItem -> manufactureList)
+        freeSLL(myItem->manufactureList);
     free(myItem);
 }
 

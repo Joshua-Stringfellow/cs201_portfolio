@@ -193,7 +193,6 @@ void runLogging(HASHTABLE *temp){
         free(another);
     }
     free(logFile);
-    freeTable(temp);
 }
 
 void updateLog(){
