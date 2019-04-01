@@ -30,7 +30,7 @@ int main() {
 
         }
     }
-
+    freeTable(dataset);
     //free(help);
     return 0;
 }
