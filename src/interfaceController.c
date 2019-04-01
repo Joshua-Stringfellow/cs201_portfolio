@@ -24,11 +24,12 @@ char* cleanInput(char *string){
 
 char *getFileName(){
     printf("Enter your myBama username(in most cases first initial middle initial last name)\n");
-    char *logFile = cleanInput(getMenuChoice());
+    char *logFile = strcat(cleanInput(getMenuChoice()),".log");
     return logFile;
 }
-FOODITEM *updateLine(char *str){
-    char delim[2] = " ";
+
+FOODITEM *updateItem(char *str){
+    char delim[2] = "~";
     char *ptr= strtok(str, delim);
     int index = 1;
     int value = 0;
@@ -36,19 +37,18 @@ FOODITEM *updateLine(char *str){
     while(ptr != NULL)
     {
         ptr = strtok(NULL, delim);
-        if (index % 2 == 0)
-            values[value] = ptr;
         index ++;
     }
-    return createFoodItem(values);
+    return NULL ;
 }
+
 //https://www.w3resource.com/c-programming-exercises/file-handling/c-file-handling-exercise-9.php
 void updateFile(char *fname){
     FILE *fptr1, *fptr2;
     int linectr = 0;
     char *stop;
     char str[MAX];
-    char newln[MAX], temp[] = "temp.txt";
+    char temp[] = "temp.txt";
 
     printf("\n\n Update the servings for a specific item in your log :\n");
     printf("-------------------------------------------------------------\n");
@@ -59,7 +59,7 @@ void updateFile(char *fname){
         printf("Unable to open the input file!!\n");
         return;
     }
-    fptr2 = fopen(temp, "w");
+    fptr2 = fopen(temp, "a");
     if (!fptr2)
     {
         printf("Unable to open a temporary file to write!!\n");
@@ -69,7 +69,6 @@ void updateFile(char *fname){
     /* get the line number to delete the specific line */
     printf(" Input the line no you want to replace : ");
     long int lno = strtol(cleanInput(getMenuChoice()),&stop, 10);
-    lno++;
     /* get the new line from the user */
     printf(" Input how many servings you had: ");
     char *newServings = cleanInput(getMenuChoice());
@@ -88,7 +87,7 @@ void updateFile(char *fname){
             }
             else
             {
-                FOODITEM *update = updateLine(str);
+                FOODITEM *update = updateItem(str);
                 displayFoodItem(update,stdout,servings);
                 //fprintf(fptr2, "%s", newln);
             }
@@ -106,7 +105,7 @@ void deleteLine() {
     int lno, ctr = 0;
     char ch;
     FILE *fptr1, *fptr2;
-    char fname[MAX];
+    char *fname;
     char str[MAX], temp[] = "temp.txt";
     printf("\n\n Delete a specific line from a file :\n");
     printf("-----------------------------------------\n");
@@ -139,24 +138,18 @@ void deleteLine() {
     fclose(fptr1);
     fclose(fptr2);
     remove(fname);        // remove the original file
-    rename(temp, fname);    // rename the temporary file to original name
+    rename(temp, fname);
+    // rename the temporary file to original name
 /*------ Read the file ----------------*/
-    fptr1 = fopen(fname, "r");
-    ch = fgetc(fptr1);
-    printf(" Now the content of the file %s is : \n", fname);
-    while (ch != EOF) {
-        printf("%c", ch);
-        ch = fgetc(fptr1);
-    }
     fclose(fptr1);
 /*------- End of reading ---------------*/
 }
 
 //public
-void runLogging(char *filename){
+void runLogging(HASHTABLE *temp){
     printLoadingMessage();
-    HASHTABLE *temp;
-    temp=readFile(filename);
+    //HASHTABLE *temp;
+    //temp=readFile(filename);
     printf("done.\n");
     char *logFile = getFileName();
     int run = 1;
@@ -185,7 +178,7 @@ void runLogging(char *filename){
             else {
                 printf("Invalid item number\n");
             }
-            FILE *log = fopen(strcat(logFile, ".log"), "a");
+            FILE *log = fopen(logFile, "a");
             if (item!=NULL)
                 writeToFile(item, log, servings);
             fclose(log);

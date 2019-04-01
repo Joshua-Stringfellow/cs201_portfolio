@@ -32,7 +32,7 @@ void parseString(HASHTABLE*myTable, char *string){
 }
 //Public Functions
 HASHTABLE *readFile(char *databaseFile){
-    HASHTABLE *table= createHashTable(100000);
+    HASHTABLE *table= createHashTable(1);
     FILE *fp;
     char *line = NULL;
     size_t len = 0;
