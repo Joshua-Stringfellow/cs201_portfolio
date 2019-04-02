@@ -7,7 +7,6 @@
 #include "userInterface.h"
 #include "hashtable.h"
 #include "dataLoader.h"
-#include "logger.h"
 #define MAX 256
 //https://stackoverflow.com/questions/38767967/clear-input-buffer-after-fgets-in-c
 char* cleanInput(char *string){
