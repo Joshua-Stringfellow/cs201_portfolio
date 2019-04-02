@@ -30,6 +30,10 @@ char *lowerString(char* key){
 TABLEITEM *createTableItem(FOODITEM *myItem){
     char *key = lowerString(myItem->manufacture);
     TABLEITEM *newTableItem = malloc(sizeof(TABLEITEM));
+    if (newTableItem == 0) {
+        fprintf(stderr, "out of memory");
+        exit(-1);
+    }
     newTableItem -> key = key;
     newTableItem -> manufactureList = newSLL();
     insertSLL(newTableItem->manufactureList, myItem);
@@ -39,6 +43,10 @@ TABLEITEM *createTableItem(FOODITEM *myItem){
 
 TABLEITEM *createExisitingTableItem(char *key, SLL *list){
     TABLEITEM *newTableItem = malloc(sizeof(TABLEITEM));
+    if (newTableItem == 0) {
+        fprintf(stderr, "out of memory");
+        exit(-1);
+    }
     newTableItem -> key = key;
     newTableItem -> manufactureList = list;
 
@@ -119,9 +127,17 @@ void expandTable(HASHTABLE *oldTable){
 //public
 HASHTABLE *createHashTable(size_t size){
     HASHTABLE *newTable = malloc(sizeof(HASHTABLE));
+    if (newTable == 0) {
+        fprintf(stderr, "out of memory");
+        exit(-1);
+    }
     newTable -> size = size;
     newTable -> count = 0;
     newTable -> items = calloc(size, sizeof(FOODITEM));
+    if (newTable->items == 0) {
+        fprintf(stderr, "out of memory");
+        exit(-1);
+    }
     return newTable;
 }
 

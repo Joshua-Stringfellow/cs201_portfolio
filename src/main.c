@@ -5,14 +5,14 @@
 #include "interfaceController.h"
 
 int main() {
-    //char *filename= "resources/food_nutrient_db.csv";
-    char *filename= "resources/test.csv";
+    char *filename= "resources/food_nutrient_db.csv";
+    //char *filename= "resources/test.csv";
     char *stop;
     HASHTABLE *dataset = readFile(filename);
     while(1){
         showMenu();
         char *choice =cleanInput(getMenuChoice());
-        if (strcmp(choice,"exit") == 0){
+        if (strncmp(choice,"exit",100) == 0){
             free(choice);
             break;
         }
@@ -22,8 +22,9 @@ int main() {
             case 1:
                 runLogging(dataset);
                 break;
+
             case 2:
-                updateLog();
+                updateLog(dataset);
 
             default:
                 break;

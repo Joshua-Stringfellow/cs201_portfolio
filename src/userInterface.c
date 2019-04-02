@@ -11,13 +11,6 @@ void printWelcomeMessage(){
     printf("Welcome to your nutrition logger!\nType \"help\" for instructions or press ENTER to continue\n");
 }
 
-char *promptUserForHelp(){
-    char *string= calloc(100, sizeof(char));
-    return fgets(string, 100, stdin);
-}
-void printHelpMessage(){
-    printf("This is the help menu\n");
-}
 void showMenu(){
     printf("Main Menu:\n");
     printf("1.Log your food\n");
@@ -27,6 +20,10 @@ void showMenu(){
 }
 char *getMenuChoice(){
     char *string = calloc(100, sizeof(char));
+    if (string == 0) {
+        fprintf(stderr, "out of memory");
+        exit(-1);
+    }
     return fgets(string, 100, stdin);
 }
 void printLoadingMessage(){

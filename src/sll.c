@@ -6,17 +6,16 @@
 #include <assert.h>
 #include "sll.h"
 
-
-
 SLL *newSLL() {
-        SLL *items = malloc(sizeof(SLL));
-        assert(items != 0);
-        items->head = 0;
-        items->tail = 0;
-        items->size = 0;
-//        manufactureList->display = d;
-//        manufactureList->free = f;
-        return items;
+    SLL *items = malloc(sizeof(SLL));
+    if (items == 0) {
+        fprintf(stderr, "out of memory");
+        exit(-1);
+    }
+    items->head = 0;
+    items->tail = 0;
+    items->size = 0;
+    return items;
 }
 void insertSLL(SLL *items, FOODITEM *newItem){
     if (items -> size == 0){
@@ -29,52 +28,6 @@ void insertSLL(SLL *items, FOODITEM *newItem){
     }
         
     items->size++;
-}
-
-void *removeSLL(SLL *items,int index){
-    assert(sizeSLL(items) > 0 && index >= 0);
-    FOODITEM *curr = items->head;
-    void *returnValue = curr;
-
-    if (index == 0)
-    {
-        returnValue = curr;
-        if (sizeSLL(items) > 1)
-        {
-            items->head = curr->next;
-            free(curr);
-        }
-        else
-        {
-            items->head = 0;
-            items-> tail = 0;
-            items->size = 0;
-            free(curr);
-            return returnValue;
-        }
-
-    }
-    else
-    {
-        for (int i=0; i < index - 1; i++){
-            curr = curr->next;
-        }
-        returnValue = curr->next;
-        if(index == sizeSLL(items) - 1)
-        {
-            items->tail = curr;
-            free(curr->next);
-            curr->next=0;
-        }
-        else
-        {
-            FOODITEM *removedFOODITEM = curr->next;
-            curr->next = removedFOODITEM->next;
-        }
-    }
-
-    items->size--;
-    return returnValue;
 }
 
 void *getSLL(SLL *items,int index){

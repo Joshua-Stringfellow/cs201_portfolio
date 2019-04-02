@@ -3,10 +3,3 @@
 //
 #include <time.h>
 #include "logger.h"
-
-
-
-void writeToFile(FOODITEM *myItem, FILE *fp, long int servings){
-    displayFoodItem(myItem, fp, servings);
-    printf("Item successfully logged\n");
-}
