@@ -8,7 +8,6 @@ cd cs201_portfolio
 cmake .
 cmake --build . --target all
 ```
-The executable will be located in a new directory *build*
 
 ## The database
 This program expects a database titled **food_nutrient_db.csv** to be in the **resources** directory
@@ -18,7 +17,7 @@ The database file can be built using the script provided by Dr. Anderson **build
 ## Execute
 Execute from the main project directory
 ```
-build/cs201_portfolio
+./cs201_portfolio
 ```
 
 ## Instructions
