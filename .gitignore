@@ -1,4 +1,6 @@
 cmake-build-debug/
+CMakeFiles
 .idea/
-resources/
+resources/food_*
+resources/.~*
 *.log
